@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="InsuranceSurchargeCollectSumDefinitions"
+             name="InsuranceSurchargeCollectSumModel"
+             namespace="https://example.com/dmn/insurance-surcharge-collect-sum">
+
+    <inputData id="InputData_applicantAge" name="applicantAge">
+        <variable id="InputData_applicantAge_var" name="applicantAge" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_isSmoker" name="isSmoker">
+        <variable id="InputData_isSmoker_var" name="isSmoker" typeRef="boolean"/>
+    </inputData>
+    <inputData id="InputData_hasPreExistingCondition" name="hasPreExistingCondition">
+        <variable id="InputData_hasPreExistingCondition_var" name="hasPreExistingCondition" typeRef="boolean"/>
+    </inputData>
+    <inputData id="InputData_bmi" name="bmi">
+        <variable id="InputData_bmi_var" name="bmi" typeRef="number"/>
+    </inputData>
+
+    <decision id="Decision_InsuranceSurchargeCollectSum" name="InsuranceSurchargeCollectSum">
+        <variable id="Decision_InsuranceSurchargeCollectSum_var" name="InsuranceSurchargeCollectSum" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_applicantAge"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_isSmoker"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_hasPreExistingCondition"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_bmi"/>
+        </informationRequirement>
+
+        <decisionTable id="DecisionTable_InsuranceSurchargeCollectSum" hitPolicy="COLLECT" aggregation="SUM">
+            <input id="InputClause_applicantAge">
+                <inputExpression id="InputExpression_applicantAge" typeRef="number">
+                    <text>applicantAge</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_isSmoker">
+                <inputExpression id="InputExpression_isSmoker" typeRef="boolean">
+                    <text>isSmoker</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_hasPreExistingCondition">
+                <inputExpression id="InputExpression_hasPreExistingCondition" typeRef="boolean">
+                    <text>hasPreExistingCondition</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_bmi">
+                <inputExpression id="InputExpression_bmi" typeRef="number">
+                    <text>bmi</text>
+                </inputExpression>
+            </input>
+            <output id="OutputClause_surchargePercent" name="surchargePercent" typeRef="number"/>
+
+            <rule id="Rule_SeniorSurcharge">
+                <inputEntry id="Rule_SeniorSurcharge_input1"><text>&gt;= 60</text></inputEntry>
+                <inputEntry id="Rule_SeniorSurcharge_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_SeniorSurcharge_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_SeniorSurcharge_input4"><text>-</text></inputEntry>
+                <outputEntry id="Rule_SeniorSurcharge_output1"><text>12</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_SmokerSurcharge">
+                <inputEntry id="Rule_SmokerSurcharge_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_SmokerSurcharge_input2"><text>true</text></inputEntry>
+                <inputEntry id="Rule_SmokerSurcharge_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_SmokerSurcharge_input4"><text>-</text></inputEntry>
+                <outputEntry id="Rule_SmokerSurcharge_output1"><text>15</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_PreExistingConditionSurcharge">
+                <inputEntry id="Rule_PreExistingConditionSurcharge_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_PreExistingConditionSurcharge_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_PreExistingConditionSurcharge_input3"><text>true</text></inputEntry>
+                <inputEntry id="Rule_PreExistingConditionSurcharge_input4"><text>-</text></inputEntry>
+                <outputEntry id="Rule_PreExistingConditionSurcharge_output1"><text>10</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_BmiSurcharge">
+                <inputEntry id="Rule_BmiSurcharge_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_BmiSurcharge_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_BmiSurcharge_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_BmiSurcharge_input4"><text>&gt;= 30</text></inputEntry>
+                <outputEntry id="Rule_BmiSurcharge_output1"><text>8</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_NoSurchargeBaseline">
+                <inputEntry id="Rule_NoSurchargeBaseline_input1"><text>&lt; 60</text></inputEntry>
+                <inputEntry id="Rule_NoSurchargeBaseline_input2"><text>false</text></inputEntry>
+                <inputEntry id="Rule_NoSurchargeBaseline_input3"><text>false</text></inputEntry>
+                <inputEntry id="Rule_NoSurchargeBaseline_input4"><text>&lt; 30</text></inputEntry>
+                <outputEntry id="Rule_NoSurchargeBaseline_output1"><text>0</text></outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_InsuranceSurchargeCollectSum"/>
+    </dmndi:DMNDI>
+</definitions>

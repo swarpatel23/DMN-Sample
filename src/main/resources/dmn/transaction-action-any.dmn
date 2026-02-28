@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="TransactionActionAnyDefinitions"
+             name="TransactionActionAnyModel"
+             namespace="https://example.com/dmn/transaction-action-any">
+
+    <inputData id="InputData_transactionAmount" name="transactionAmount">
+        <variable id="InputData_transactionAmount_var" name="transactionAmount" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_countryRisk" name="countryRisk">
+        <variable id="InputData_countryRisk_var" name="countryRisk" typeRef="string"/>
+    </inputData>
+    <inputData id="InputData_failedOtpAttempts" name="failedOtpAttempts">
+        <variable id="InputData_failedOtpAttempts_var" name="failedOtpAttempts" typeRef="number"/>
+    </inputData>
+
+    <decision id="Decision_TransactionActionAny" name="TransactionActionAny">
+        <variable id="Decision_TransactionActionAny_var" name="TransactionActionAny" typeRef="string"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_transactionAmount"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_countryRisk"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_failedOtpAttempts"/>
+        </informationRequirement>
+
+        <decisionTable id="DecisionTable_TransactionActionAny" hitPolicy="ANY">
+            <input id="InputClause_transactionAmount">
+                <inputExpression id="InputExpression_transactionAmount" typeRef="number">
+                    <text>transactionAmount</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_countryRisk">
+                <inputExpression id="InputExpression_countryRisk" typeRef="string">
+                    <text>countryRisk</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_failedOtpAttempts">
+                <inputExpression id="InputExpression_failedOtpAttempts" typeRef="number">
+                    <text>failedOtpAttempts</text>
+                </inputExpression>
+            </input>
+            <output id="OutputClause_action" name="action" typeRef="string"/>
+
+            <rule id="Rule_ReviewHighAmount">
+                <description>High-value transaction must be reviewed.</description>
+                <inputEntry id="Rule_ReviewHighAmount_input1"><text>&gt; 10000</text></inputEntry>
+                <inputEntry id="Rule_ReviewHighAmount_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_ReviewHighAmount_input3"><text>-</text></inputEntry>
+                <outputEntry id="Rule_ReviewHighAmount_output1"><text>"REVIEW"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_ReviewHighRiskCountry">
+                <description>High-risk country transactions must be reviewed.</description>
+                <inputEntry id="Rule_ReviewHighRiskCountry_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_ReviewHighRiskCountry_input2"><text>"HIGH"</text></inputEntry>
+                <inputEntry id="Rule_ReviewHighRiskCountry_input3"><text>-</text></inputEntry>
+                <outputEntry id="Rule_ReviewHighRiskCountry_output1"><text>"REVIEW"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_ReviewOtpFailures">
+                <description>Repeated OTP failures trigger review.</description>
+                <inputEntry id="Rule_ReviewOtpFailures_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_ReviewOtpFailures_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_ReviewOtpFailures_input3"><text>&gt;= 3</text></inputEntry>
+                <outputEntry id="Rule_ReviewOtpFailures_output1"><text>"REVIEW"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_AutoApproveNormalRisk">
+                <description>Normal-risk transactions are auto-approved.</description>
+                <inputEntry id="Rule_AutoApproveNormalRisk_input1"><text>&lt;= 10000</text></inputEntry>
+                <inputEntry id="Rule_AutoApproveNormalRisk_input2"><text>not("HIGH")</text></inputEntry>
+                <inputEntry id="Rule_AutoApproveNormalRisk_input3"><text>&lt; 3</text></inputEntry>
+                <outputEntry id="Rule_AutoApproveNormalRisk_output1"><text>"APPROVE"</text></outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_TransactionActionAny"/>
+    </dmndi:DMNDI>
+</definitions>

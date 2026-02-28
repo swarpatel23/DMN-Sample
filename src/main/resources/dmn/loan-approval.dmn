@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             id="LoanApprovalDefinitions"
+             name="LoanApprovalModel"
+             namespace="https://example.com/dmn/loan-approval">
+
+    <inputData id="InputData_applicantAge" name="applicantAge">
+        <variable id="InputData_applicantAge_var" name="applicantAge" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_creditScore" name="creditScore">
+        <variable id="InputData_creditScore_var" name="creditScore" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_annualIncome" name="annualIncome">
+        <variable id="InputData_annualIncome_var" name="annualIncome" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_debtToIncome" name="debtToIncome">
+        <variable id="InputData_debtToIncome_var" name="debtToIncome" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_requestedAmount" name="requestedAmount">
+        <variable id="InputData_requestedAmount_var" name="requestedAmount" typeRef="number"/>
+    </inputData>
+
+    <decision id="Decision_LoanApproval" name="LoanApproval">
+        <variable id="Decision_LoanApproval_var" name="LoanApproval" typeRef="string"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_applicantAge"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_creditScore"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_annualIncome"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_debtToIncome"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_requestedAmount"/>
+        </informationRequirement>
+        <decisionTable id="DecisionTable_LoanApproval" hitPolicy="FIRST">
+            <input id="InputClause_applicantAge">
+                <inputExpression id="InputExpression_applicantAge" typeRef="number">
+                    <text>applicantAge</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_creditScore">
+                <inputExpression id="InputExpression_creditScore" typeRef="number">
+                    <text>creditScore</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_annualIncome">
+                <inputExpression id="InputExpression_annualIncome" typeRef="number">
+                    <text>annualIncome</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_debtToIncome">
+                <inputExpression id="InputExpression_debtToIncome" typeRef="number">
+                    <text>debtToIncome</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_requestedAmount">
+                <inputExpression id="InputExpression_requestedAmount" typeRef="number">
+                    <text>requestedAmount</text>
+                </inputExpression>
+            </input>
+
+            <output id="OutputClause_decision" name="decision" typeRef="string"/>
+
+            <rule id="Rule_RejectUnderage">
+                <description>Applicants under 21 are rejected.</description>
+                <inputEntry id="Rule_RejectUnderage_input1"><text>&lt; 21</text></inputEntry>
+                <inputEntry id="Rule_RejectUnderage_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectUnderage_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectUnderage_input4"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectUnderage_input5"><text>-</text></inputEntry>
+                <outputEntry id="Rule_RejectUnderage_output1"><text>"REJECT"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_RejectVeryLowCredit">
+                <description>Very low credit score is rejected.</description>
+                <inputEntry id="Rule_RejectVeryLowCredit_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectVeryLowCredit_input2"><text>&lt; 580</text></inputEntry>
+                <inputEntry id="Rule_RejectVeryLowCredit_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectVeryLowCredit_input4"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectVeryLowCredit_input5"><text>-</text></inputEntry>
+                <outputEntry id="Rule_RejectVeryLowCredit_output1"><text>"REJECT"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_RejectHighDti">
+                <description>Debt-to-income above 45% is rejected.</description>
+                <inputEntry id="Rule_RejectHighDti_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectHighDti_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectHighDti_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_RejectHighDti_input4"><text>&gt; 0.45</text></inputEntry>
+                <inputEntry id="Rule_RejectHighDti_input5"><text>-</text></inputEntry>
+                <outputEntry id="Rule_RejectHighDti_output1"><text>"REJECT"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_ApprovePrimeLarge">
+                <description>Prime borrowers can be approved for larger loans.</description>
+                <inputEntry id="Rule_ApprovePrimeLarge_input1"><text>&gt;= 21</text></inputEntry>
+                <inputEntry id="Rule_ApprovePrimeLarge_input2"><text>&gt;= 720</text></inputEntry>
+                <inputEntry id="Rule_ApprovePrimeLarge_input3"><text>&gt;= 120000</text></inputEntry>
+                <inputEntry id="Rule_ApprovePrimeLarge_input4"><text>&lt;= 0.30</text></inputEntry>
+                <inputEntry id="Rule_ApprovePrimeLarge_input5"><text>&lt;= 500000</text></inputEntry>
+                <outputEntry id="Rule_ApprovePrimeLarge_output1"><text>"APPROVE"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_ApproveStandard">
+                <description>Standard approval band.</description>
+                <inputEntry id="Rule_ApproveStandard_input1"><text>&gt;= 21</text></inputEntry>
+                <inputEntry id="Rule_ApproveStandard_input2"><text>&gt;= 660</text></inputEntry>
+                <inputEntry id="Rule_ApproveStandard_input3"><text>&gt;= 60000</text></inputEntry>
+                <inputEntry id="Rule_ApproveStandard_input4"><text>&lt;= 0.40</text></inputEntry>
+                <inputEntry id="Rule_ApproveStandard_input5"><text>&lt;= 250000</text></inputEntry>
+                <outputEntry id="Rule_ApproveStandard_output1"><text>"APPROVE"</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_DefaultReview">
+                <description>Everything else goes to manual review.</description>
+                <inputEntry id="Rule_DefaultReview_input1"><text>-</text></inputEntry>
+                <inputEntry id="Rule_DefaultReview_input2"><text>-</text></inputEntry>
+                <inputEntry id="Rule_DefaultReview_input3"><text>-</text></inputEntry>
+                <inputEntry id="Rule_DefaultReview_input4"><text>-</text></inputEntry>
+                <inputEntry id="Rule_DefaultReview_input5"><text>-</text></inputEntry>
+                <outputEntry id="Rule_DefaultReview_output1"><text>"REVIEW"</text></outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_1"/>
+    </dmndi:DMNDI>
+</definitions>

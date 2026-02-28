@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="ContextDiscountDefinitions"
+             name="ContextDiscountModel"
+             namespace="https://example.com/dmn/context-discount">
+
+    <inputData id="InputData_orderAmount" name="orderAmount">
+        <variable id="InputData_orderAmount_var" name="orderAmount" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_isVip" name="isVip">
+        <variable id="InputData_isVip_var" name="isVip" typeRef="boolean"/>
+    </inputData>
+
+    <decision id="Decision_ContextDiscount" name="ContextDiscount">
+        <variable id="Decision_ContextDiscount_var" name="ContextDiscount" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_orderAmount"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_isVip"/>
+        </informationRequirement>
+
+        <context id="Context_ContextDiscount">
+            <contextEntry id="ContextEntry_baseDiscount">
+                <variable id="ContextEntry_baseDiscount_var" name="baseDiscount" typeRef="number"/>
+                <literalExpression id="LiteralExpression_baseDiscount">
+                    <text>if orderAmount >= 500 then 15 else if orderAmount >= 100 then 5 else 0</text>
+                </literalExpression>
+            </contextEntry>
+            <contextEntry id="ContextEntry_vipBonus">
+                <variable id="ContextEntry_vipBonus_var" name="vipBonus" typeRef="number"/>
+                <literalExpression id="LiteralExpression_vipBonus">
+                    <text>if isVip then 3 else 0</text>
+                </literalExpression>
+            </contextEntry>
+            <contextEntry id="ContextEntry_totalDiscount">
+                <variable id="ContextEntry_totalDiscount_var" name="totalDiscount" typeRef="number"/>
+                <literalExpression id="LiteralExpression_totalDiscount">
+                    <text>baseDiscount + vipBonus</text>
+                </literalExpression>
+            </contextEntry>
+            <contextEntry id="ContextEntry_result">
+                <literalExpression id="LiteralExpression_result">
+                    <text>totalDiscount</text>
+                </literalExpression>
+            </contextEntry>
+        </context>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_ContextDiscount"/>
+    </dmndi:DMNDI>
+</definitions>

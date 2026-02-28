@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.jdmn</groupId>
+    <artifactId>jdmn-loan-approval-demo</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>jDMN Loan Approval Demo</name>
+    <description>Real-world DMN decision table executed through jDMN generated code</description>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.jupiter.version>5.12.1</junit.jupiter.version>
+        <jdmn.version>9.0.0</jdmn.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.goldmansachs.jdmn</groupId>
+            <artifactId>jdmn-runtime</artifactId>
+            <version>${jdmn.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.goldmansachs.jdmn</groupId>
+            <artifactId>jdmn-core</artifactId>
+            <version>${jdmn.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <outputDirectory>${project.build.directory}/maven-classes</outputDirectory>
+        <testOutputDirectory>${project.build.directory}/maven-test-classes</testOutputDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+            </plugin>
+
+            <plugin>
+                <groupId>com.goldmansachs.jdmn</groupId>
+                <artifactId>jdmn-maven-plugin</artifactId>
+                <version>${jdmn.version}</version>
+                <executions>
+                    <execution>
+                        <id>dmn-to-java</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>dmn-to-java</goal>
+                        </goals>
+                        <configuration>
+                            <inputFileDirectory>${project.basedir}/src/main/resources/dmn</inputFileDirectory>
+                            <outputFileDirectory>${project.build.directory}/generated-sources/jdmn</outputFileDirectory>
+                            <dmnDialect>com.gs.dmn.dialect.JavaTimeDMNDialectDefinition</dmnDialect>
+                            <inputParameters>
+                                <dmnVersion>1.5</dmnVersion>
+                                <modelVersion>1.0.0</modelVersion>
+                                <platformVersion>${jdmn.version}</platformVersion>
+                                <xsdValidation>true</xsdValidation>
+                                <caching>false</caching>
+                                <javaRootPackage>com.example.jdmn.generated</javaRootPackage>
+                            </inputParameters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>add-jdmn-generated-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/jdmn</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

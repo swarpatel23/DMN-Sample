@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="LiteralExpressionDefinitions"
+             name="LiteralExpressionModel"
+             namespace="https://example.com/dmn/literal-expression">
+
+    <inputData id="InputData_baseRate" name="baseRate">
+        <variable id="InputData_baseRate_var" name="baseRate" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_riskScore" name="riskScore">
+        <variable id="InputData_riskScore_var" name="riskScore" typeRef="number"/>
+    </inputData>
+
+    <decision id="Decision_LiteralRate" name="LiteralRate">
+        <variable id="Decision_LiteralRate_var" name="LiteralRate" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_baseRate"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_riskScore"/>
+        </informationRequirement>
+
+        <literalExpression id="LiteralExpression_LiteralRate">
+            <text>baseRate + (riskScore * 0.1)</text>
+        </literalExpression>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_LiteralExpression"/>
+    </dmndi:DMNDI>
+</definitions>

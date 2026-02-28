@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="DrgChainedDecisionDefinitions"
+             name="DrgChainedDecisionModel"
+             namespace="https://example.com/dmn/drg-chained-decision">
+
+    <inputData id="InputData_creditScore" name="creditScore">
+        <variable id="InputData_creditScore_var" name="creditScore" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_baseRate" name="baseRate">
+        <variable id="InputData_baseRate_var" name="baseRate" typeRef="number"/>
+    </inputData>
+
+    <decision id="Decision_RiskBand" name="RiskBand">
+        <variable id="Decision_RiskBand_var" name="RiskBand" typeRef="string"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_creditScore"/>
+        </informationRequirement>
+
+        <literalExpression id="LiteralExpression_RiskBand">
+            <text>if creditScore >= 750 then "LOW" else if creditScore >= 650 then "MEDIUM" else "HIGH"</text>
+        </literalExpression>
+    </decision>
+
+    <decision id="Decision_OfferedRate" name="OfferedRate">
+        <variable id="Decision_OfferedRate_var" name="OfferedRate" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_baseRate"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredDecision href="#Decision_RiskBand"/>
+        </informationRequirement>
+
+        <literalExpression id="LiteralExpression_OfferedRate">
+            <text>if RiskBand = "LOW" then baseRate else if RiskBand = "MEDIUM" then baseRate + 1 else baseRate + 2.5</text>
+        </literalExpression>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_DrgChainedDecision"/>
+    </dmndi:DMNDI>
+</definitions>

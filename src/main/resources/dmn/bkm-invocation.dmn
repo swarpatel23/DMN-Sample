@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="BkmInvocationDefinitions"
+             name="BkmInvocationModel"
+             namespace="https://example.com/dmn/bkm-invocation">
+
+    <itemDefinition id="ItemDefinition_PaymentFunction" name="PaymentFunction">
+        <functionItem id="FunctionItem_PaymentFunction" outputTypeRef="number">
+            <parameters id="FunctionItem_param_principal" name="principal" typeRef="number"/>
+            <parameters id="FunctionItem_param_annualRate" name="annualRate" typeRef="number"/>
+            <parameters id="FunctionItem_param_termMonths" name="termMonths" typeRef="number"/>
+        </functionItem>
+    </itemDefinition>
+
+    <inputData id="InputData_principal" name="principal">
+        <variable id="InputData_principal_var" name="principal" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_annualRate" name="annualRate">
+        <variable id="InputData_annualRate_var" name="annualRate" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_termMonths" name="termMonths">
+        <variable id="InputData_termMonths_var" name="termMonths" typeRef="number"/>
+    </inputData>
+
+    <businessKnowledgeModel id="BKM_PaymentFormula" name="PaymentFormula">
+        <variable id="BKM_PaymentFormula_var" name="PaymentFormula" typeRef="PaymentFunction"/>
+        <encapsulatedLogic id="FunctionDefinition_PaymentFormula" kind="FEEL">
+            <formalParameter id="FP_principal" name="principal" typeRef="number"/>
+            <formalParameter id="FP_annualRate" name="annualRate" typeRef="number"/>
+            <formalParameter id="FP_termMonths" name="termMonths" typeRef="number"/>
+            <literalExpression id="LiteralExpression_PaymentFormula">
+                <text>(principal / termMonths) + (principal * annualRate / 12)</text>
+            </literalExpression>
+        </encapsulatedLogic>
+    </businessKnowledgeModel>
+
+    <decision id="Decision_MonthlyPaymentFromBkm" name="MonthlyPaymentFromBkm">
+        <variable id="Decision_MonthlyPaymentFromBkm_var" name="MonthlyPaymentFromBkm" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_principal"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_annualRate"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_termMonths"/>
+        </informationRequirement>
+        <knowledgeRequirement>
+            <requiredKnowledge href="#BKM_PaymentFormula"/>
+        </knowledgeRequirement>
+
+        <invocation id="Invocation_MonthlyPaymentFromBkm">
+            <literalExpression id="InvocationExpression_PaymentFormula">
+                <text>PaymentFormula</text>
+            </literalExpression>
+            <binding>
+                <parameter name="principal"/>
+                <literalExpression>
+                    <text>principal</text>
+                </literalExpression>
+            </binding>
+            <binding>
+                <parameter name="annualRate"/>
+                <literalExpression>
+                    <text>annualRate</text>
+                </literalExpression>
+            </binding>
+            <binding>
+                <parameter name="termMonths"/>
+                <literalExpression>
+                    <text>termMonths</text>
+                </literalExpression>
+            </binding>
+        </invocation>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_BkmInvocation"/>
+    </dmndi:DMNDI>
+</definitions>

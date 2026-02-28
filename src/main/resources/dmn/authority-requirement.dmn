@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="AuthorityRequirementDefinitions"
+             name="AuthorityRequirementModel"
+             namespace="https://example.com/dmn/authority-requirement">
+
+    <inputData id="InputData_age" name="age">
+        <variable id="InputData_age_var" name="age" typeRef="number"/>
+    </inputData>
+
+    <knowledgeSource id="KnowledgeSource_KycPolicy" name="KycPolicy"/>
+
+    <decision id="Decision_KycAction" name="KycAction">
+        <variable id="Decision_KycAction_var" name="KycAction" typeRef="string"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_age"/>
+        </informationRequirement>
+        <authorityRequirement>
+            <requiredAuthority href="#KnowledgeSource_KycPolicy"/>
+        </authorityRequirement>
+
+        <literalExpression id="LiteralExpression_KycAction">
+            <text>if age &lt; 21 then "ENHANCED_DUE_DILIGENCE" else "STANDARD_DUE_DILIGENCE"</text>
+        </literalExpression>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_AuthorityRequirement"/>
+    </dmndi:DMNDI>
+</definitions>

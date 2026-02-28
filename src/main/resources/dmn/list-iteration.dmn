@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="ListIterationDefinitions"
+             name="ListIterationModel"
+             namespace="https://example.com/dmn/list-iteration">
+
+    <inputData id="InputData_multiplier" name="multiplier">
+        <variable id="InputData_multiplier_var" name="multiplier" typeRef="number"/>
+    </inputData>
+
+    <decision id="Decision_WeightedTotal" name="WeightedTotal">
+        <variable id="Decision_WeightedTotal_var" name="WeightedTotal" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_multiplier"/>
+        </informationRequirement>
+
+        <literalExpression id="LiteralExpression_WeightedTotal">
+            <text>sum(for x in [10, 20, 30] return x * multiplier)</text>
+        </literalExpression>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_ListIteration"/>
+    </dmndi:DMNDI>
+</definitions>

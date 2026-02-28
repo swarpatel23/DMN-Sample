@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="TypeSystemDefinitions"
+             name="TypeSystemModel"
+             namespace="https://example.com/dmn/type-system">
+
+    <itemDefinition id="ItemDefinition_DiscountRate" name="DiscountRate">
+        <typeRef>number</typeRef>
+    </itemDefinition>
+
+    <decision id="Decision_TypedRate" name="TypedRate">
+        <variable id="Decision_TypedRate_var" name="TypedRate" typeRef="DiscountRate"/>
+        <literalExpression id="LiteralExpression_TypedRate">
+            <text>12.5</text>
+        </literalExpression>
+    </decision>
+
+    <decision id="Decision_TypedRateWithMargin" name="TypedRateWithMargin">
+        <variable id="Decision_TypedRateWithMargin_var" name="TypedRateWithMargin" typeRef="DiscountRate"/>
+        <informationRequirement>
+            <requiredDecision href="#Decision_TypedRate"/>
+        </informationRequirement>
+        <literalExpression id="LiteralExpression_TypedRateWithMargin">
+            <text>TypedRate + 2.5</text>
+        </literalExpression>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_TypeSystem"/>
+    </dmndi:DMNDI>
+</definitions>

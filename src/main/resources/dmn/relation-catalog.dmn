@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="RelationCatalogDefinitions"
+             name="RelationCatalogModel"
+             namespace="https://example.com/dmn/relation-catalog">
+
+    <decision id="Decision_ShippingOptions" name="ShippingOptions">
+        <variable id="Decision_ShippingOptions_var" name="ShippingOptions" typeRef="Any"/>
+
+        <relation id="Relation_ShippingOptions">
+            <column id="RelationColumn_optionName" name="optionName" typeRef="string"/>
+            <column id="RelationColumn_fee" name="fee" typeRef="number"/>
+            <row id="RelationRow_standard">
+                <literalExpression id="RelationRow_standard_expr1">
+                    <text>"STANDARD"</text>
+                </literalExpression>
+                <literalExpression id="RelationRow_standard_expr2">
+                    <text>5</text>
+                </literalExpression>
+            </row>
+            <row id="RelationRow_express">
+                <literalExpression id="RelationRow_express_expr1">
+                    <text>"EXPRESS"</text>
+                </literalExpression>
+                <literalExpression id="RelationRow_express_expr2">
+                    <text>12</text>
+                </literalExpression>
+            </row>
+            <row id="RelationRow_overnight">
+                <literalExpression id="RelationRow_overnight_expr1">
+                    <text>"OVERNIGHT"</text>
+                </literalExpression>
+                <literalExpression id="RelationRow_overnight_expr2">
+                    <text>24</text>
+                </literalExpression>
+            </row>
+        </relation>
+    </decision>
+
+    <decision id="Decision_ShippingOptionCount" name="ShippingOptionCount">
+        <variable id="Decision_ShippingOptionCount_var" name="ShippingOptionCount" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredDecision href="#Decision_ShippingOptions"/>
+        </informationRequirement>
+
+        <literalExpression id="LiteralExpression_ShippingOptionCount">
+            <text>count(ShippingOptions)</text>
+        </literalExpression>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_RelationCatalog"/>
+    </dmndi:DMNDI>
+</definitions>

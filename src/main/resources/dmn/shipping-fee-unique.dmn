@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             id="ShippingFeeUniqueDefinitions"
+             name="ShippingFeeUniqueModel"
+             namespace="https://example.com/dmn/shipping-fee-unique">
+
+    <inputData id="InputData_orderAmount" name="orderAmount">
+        <variable id="InputData_orderAmount_var" name="orderAmount" typeRef="number"/>
+    </inputData>
+    <inputData id="InputData_isPrimeCustomer" name="isPrimeCustomer">
+        <variable id="InputData_isPrimeCustomer_var" name="isPrimeCustomer" typeRef="boolean"/>
+    </inputData>
+
+    <decision id="Decision_ShippingFeeUnique" name="ShippingFeeUnique">
+        <variable id="Decision_ShippingFeeUnique_var" name="ShippingFeeUnique" typeRef="number"/>
+
+        <informationRequirement>
+            <requiredInput href="#InputData_orderAmount"/>
+        </informationRequirement>
+        <informationRequirement>
+            <requiredInput href="#InputData_isPrimeCustomer"/>
+        </informationRequirement>
+
+        <decisionTable id="DecisionTable_ShippingFeeUnique" hitPolicy="UNIQUE">
+            <input id="InputClause_orderAmount">
+                <inputExpression id="InputExpression_orderAmount" typeRef="number">
+                    <text>orderAmount</text>
+                </inputExpression>
+            </input>
+            <input id="InputClause_isPrimeCustomer">
+                <inputExpression id="InputExpression_isPrimeCustomer" typeRef="boolean">
+                    <text>isPrimeCustomer</text>
+                </inputExpression>
+            </input>
+            <output id="OutputClause_shippingFee" name="shippingFee" typeRef="number"/>
+
+            <rule id="Rule_FreeShippingHighOrder">
+                <description>Orders above 100 get free shipping.</description>
+                <inputEntry id="Rule_FreeShippingHighOrder_input1"><text>&gt;= 100</text></inputEntry>
+                <inputEntry id="Rule_FreeShippingHighOrder_input2"><text>-</text></inputEntry>
+                <outputEntry id="Rule_FreeShippingHighOrder_output1"><text>0</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_FreeShippingPrime">
+                <description>Prime customers get free shipping below 100.</description>
+                <inputEntry id="Rule_FreeShippingPrime_input1"><text>&lt; 100</text></inputEntry>
+                <inputEntry id="Rule_FreeShippingPrime_input2"><text>true</text></inputEntry>
+                <outputEntry id="Rule_FreeShippingPrime_output1"><text>0</text></outputEntry>
+            </rule>
+
+            <rule id="Rule_StandardShipping">
+                <description>Non-prime customers below 100 pay standard shipping.</description>
+                <inputEntry id="Rule_StandardShipping_input1"><text>&lt; 100</text></inputEntry>
+                <inputEntry id="Rule_StandardShipping_input2"><text>false</text></inputEntry>
+                <outputEntry id="Rule_StandardShipping_output1"><text>7.99</text></outputEntry>
+            </rule>
+        </decisionTable>
+    </decision>
+
+    <dmndi:DMNDI>
+        <dmndi:DMNDiagram id="DMNDiagram_ShippingFeeUnique"/>
+    </dmndi:DMNDI>
+</definitions>
