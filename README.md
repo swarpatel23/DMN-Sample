@@ -1,4 +1,4 @@
-# jDMN Loan Approval Demo
+# DMN Sample Project
 
 This repository shows how to model policy decisions in DMN and execute them in Java using jDMN.
 
