@@ -1,4 +1,4 @@
-# DMN Sample Project
+# jDMN Decisioning Demo
 
 This repository shows how to model policy decisions in DMN and execute them in Java using jDMN.
 
@@ -55,7 +55,27 @@ Run demos:
 mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.DemoMain
 mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.HitPolicyDemoMain
 mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.DmnConceptDemoMain
+mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.LoanAuditDemoMain
 ```
+
+## Audit And Explainability
+
+`JdmnLoanApprovalEngine` has two evaluation modes:
+
+- `evaluate(...)` returns only `LoanDecision`.
+- `evaluateWithAudit(...)` returns `LoanDecisionAudit` with:
+  - decision metadata (`decisionName`, `hitPolicy`)
+  - input snapshot (`inputs`)
+  - all evaluated rules (`evaluatedRules`)
+  - matched rules (`matchedRules`)
+  - per-column condition results (`columnChecks`)
+
+This gives you direct answers to:
+
+- Which rule fired?
+  - `audit.matchedRules().get(0).ruleIndex()` and `.annotation()`
+- Why did it fire (or not fire)?
+  - `audit.evaluatedRules()` and each rule's `columnChecks` values (`true`/`false`).
 
 ## Example Catalog (What And Why)
 
@@ -80,6 +100,7 @@ mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.DmnConceptDemoMain
 
 - `src/main/java/com/example/jdmn/loan/LoanApplication.java`
 - `src/main/java/com/example/jdmn/loan/LoanDecision.java`
+- `src/main/java/com/example/jdmn/loan/LoanDecisionAudit.java`
 - `src/main/java/com/example/jdmn/loan/JdmnLoanApprovalEngine.java`
 - `src/test/java/com/example/jdmn/loan/JdmnLoanApprovalEngineTest.java`
 
@@ -102,6 +123,7 @@ mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.DmnConceptDemoMain
   - `src/main/java/com/example/jdmn/demo/DemoMain.java`
   - `src/main/java/com/example/jdmn/demo/HitPolicyDemoMain.java`
   - `src/main/java/com/example/jdmn/demo/DmnConceptDemoMain.java`
+  - `src/main/java/com/example/jdmn/demo/LoanAuditDemoMain.java`
 
 ## Build Flow
 

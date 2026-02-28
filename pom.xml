@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example.jdmn</groupId>
-    <artifactId>jdmn-loan-approval-demo</artifactId>
+    <artifactId>jdmn-decisioning-demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>jDMN Loan Approval Demo</name>
-    <description>Real-world DMN decision table executed through jDMN generated code</description>
+    <name>jDMN Decisioning Demo</name>
+    <description>DMN decisioning examples executed through jDMN generated code</description>
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
