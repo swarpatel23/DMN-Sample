@@ -58,6 +58,31 @@ mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.DmnConceptDemoMain
 mvn -q exec:java -Dexec.mainClass=com.example.jdmn.demo.LoanAuditDemoMain
 ```
 
+## Web DMN Editor (MVP)
+
+Run the local editor server:
+
+```bash
+mvn -q exec:java -Dexec.mainClass=com.example.jdmn.editor.DmnEditorServer
+```
+
+Then open: `http://127.0.0.1:8090`
+
+What it supports:
+
+- Visual DMN editing in browser (`dmn-js` modeler).
+- View switcher (DRD / Decision Table / Literal Expression) when multiple views exist.
+- Auto-opens a non-DRD view first (useful when DRD layout metadata is missing).
+- XML mode toggle for direct source editing when canvas view is not helpful.
+- List/open/save `.dmn` files from `src/main/resources/dmn`.
+- Create a new `.dmn` file from current canvas.
+- Run `mvn clean test` from the UI and view output.
+
+Notes:
+
+- `dmn-js` is loaded from CDN (`unpkg`), so internet access is required for the editor UI assets.
+- Backend only allows root-level `.dmn` files under `src/main/resources/dmn` (no nested paths).
+
 ## Audit And Explainability
 
 `JdmnLoanApprovalEngine` has two evaluation modes:
@@ -110,6 +135,13 @@ This gives you direct answers to:
 - `src/main/java/com/example/jdmn/support/DecisionNumbers.java`
 - `src/main/java/com/gs/dmn/runtime/ContextImpl.java` (compatibility shim for relation code generation)
 - `src/test/java/com/example/jdmn/testutil/BigDecimalAssertions.java`
+
+### Editor
+
+- `src/main/java/com/example/jdmn/editor/DmnEditorServer.java`
+- `src/main/resources/editor/index.html`
+- `src/main/resources/editor/app.js`
+- `src/main/resources/editor/styles.css`
 
 ### Examples
 

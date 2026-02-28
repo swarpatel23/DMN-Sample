@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMN Editor</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dmn-js@17.0.0/dist/assets/diagram-js.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dmn-js@17.0.0/dist/assets/dmn-js-shared.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dmn-js@17.0.0/dist/assets/dmn-js-drd.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dmn-js@17.0.0/dist/assets/dmn-js-decision-table.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dmn-js@17.0.0/dist/assets/dmn-js-decision-table-controls.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dmn-js@17.0.0/dist/assets/dmn-js-literal-expression.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>DMN Editor</h1>
+    <p class="hint">Edit files from <code>src/main/resources/dmn</code>.</p>
+
+    <div class="actions">
+      <button id="refreshFilesBtn" type="button">Refresh Files</button>
+    </div>
+
+    <ul id="fileList" class="file-list"></ul>
+
+    <div class="new-file">
+      <input id="newFileNameInput" placeholder="new-model.dmn" />
+      <button id="createFileBtn" type="button">Create From Current</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="toolbar">
+      <strong id="currentFileLabel">No file selected</strong>
+      <div class="toolbar-actions">
+        <select id="viewSelect" title="Active DMN view"></select>
+        <button id="toggleXmlBtn" type="button">XML Mode</button>
+        <button id="formatXmlBtn" type="button">Format XML</button>
+        <button id="saveBtn" type="button" disabled>Save</button>
+        <button id="runTestsBtn" type="button">Run mvn clean test</button>
+      </div>
+    </header>
+
+    <section class="editor-surface">
+      <section id="canvas" class="canvas"></section>
+      <section id="xmlPanel" class="xml-panel hidden">
+        <textarea id="xmlEditor" spellcheck="false"></textarea>
+      </section>
+    </section>
+
+    <section class="output">
+      <h2>Status</h2>
+      <pre id="statusOutput">Ready.</pre>
+    </section>
+  </main>
+</div>
+
+<script src="https://unpkg.com/dmn-js@17.0.0/dist/dmn-modeler.development.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
